@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Đa Chức Năng</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .star {
+            color: #FFD700;
+            font-size: 28px;
+            margin: 0 8px;
+        }
+
+        .menu-item {
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            margin: 12px 0;
+            padding: 15px 20px;
+            border-radius: 25px;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .icon {
+            margin-right: 15px;
+            font-size: 18px;
+        }
+
+        .hidden-item {
+            background: linear-gradient(45deg, #333, #666);
+            opacity: 0.3;
+            transition: all 0.5s ease;
+        }
+
+        .hidden-item.revealed {
+            opacity: 1;
+            background: linear-gradient(45deg, #8e44ad, #3498db);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+
+        .clock-display {
+            font-size: 48px;
+            text-align: center;
+            margin: 20px 0;
+            color: #333;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+
+        .date-display {
+            font-size: 18px;
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .greeting-content {
+            text-align: center;
+            padding: 30px;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        .birthday-cake {
+            font-size: 100px;
+            text-align: center;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-30px);
+            }
+            60% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .hearts-container {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            color: #e74c3c;
+            animation: float-up 3s ease-in-out infinite;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(200px) scale(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-50px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .love-message {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .scratch-card {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            margin: 20px auto;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: crosshair;
+        }
+
+        .scratch-surface {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .scratch-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(20);
+                opacity: 0;
+            }
+        }
+
+        .year-highlight {
+            color: #FFD700;
+            font-weight: bold;
+            font-size: 28px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 10px #FFD700;
+            }
+            to {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 20px #FFD700, 0 0 30px #FFD700;
+            }
+        }
+
+        .sleep-animation {
+            font-size: 60px;
+            text-align: center;
+            margin: 20px 0;
+            animation: sleep 2s ease-in-out infinite;
+        }
+
+        @keyframes sleep {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .hidden-content {
+            background: linear-gradient(45deg, #8e44ad, #3498db);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .secret-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .secret-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .secret-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .year-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #FFD700;
+        }
+
+        .countdown-display {
+            font-size: 36px;
+            font-weight: bold;
+            color: #FFD700;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">
+                <span class="star">⭐</span>
+                Website Đa Chức Năng
+                <span class="star">⭐</span>
+            </h1>
+        </div>
+
+        <div class="menu-item" onclick="openModal('clockModal')">
+            <span class="icon">🕐</span>
+            Đồng hồ
+        </div>
+
+        <div class="menu-item" onclick="openModal('morningModal')">
+            <span class="icon">🌅</span>
+            Lời chúc buổi sáng
+        </div>
+
+        <div class="menu-item" onclick="openModal('birthdayModal')">
+            <span class="icon">🎂</span>
+            Lời chúc sinh nhật
+        </div>
+
+        <div class="menu-item" onclick="openModal('sleepModal')">
+            <span class="icon">😴</span>
+            Lời chúc ngủ ngon
+        </div>
+
+        <div class="menu-item" onclick="openModal('newyearModal')">
+            <span class="icon">🎊</span>
+            Lời chúc năm mới
+        </div>
+
+        <div class="menu-item" onclick="openModal('loveModal')">
+            <span class="icon">💕</span>
+            Lời tỏ tình
+        </div>
+
+        <div class="menu-item hidden-item" id="hiddenItem" onclick="revealHidden()">
+            <span class="icon">🎭</span>
+            Lệnh ẩn
+        </div>
+    </div>
+
+    <!-- Clock Modal -->
+    <div id="clockModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('clockModal')">&times;</span>
+            <h2>🕐 Đồng Hồ</h2>
+            <div id="clockDisplay" class="clock-display"></div>
+            <div id="dateDisplay" class="date-display"></div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button onclick="setAlarm()" style="padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">Đặt báo thức</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Morning Modal -->
+    <div id="morningModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('morningModal')">&times;</span>
+            <h2>🌅 Lời Chúc Buổi Sáng</h2>
+            <div class="greeting-content">
+                <div style="font-size: 60px; margin: 20px 0;">☀️</div>
+                <p><strong>Chào buổi sáng tốt lành!</strong></p>
+                <p>Mặt trời đã lên, một ngày mới bắt đầu</p>
+                <p>Chúc bạn một ngày tràn đầy năng lượng và niềm vui!</p>
+                <p>Hãy mỉm cười và đón nhận những điều tuyệt vời! 😊</p>
+                <div style="margin-top: 20px; font-style: italic; color: #666;">
+                    "Mỗi buổi sáng là một cơ hội mới để tạo nên những điều kỳ diệu"
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Birthday Modal -->
+    <div id="birthdayModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('birthdayModal')">&times;</span>
+            <h2>🎂 Lời Chúc Sinh Nhật</h2>
+            <div class="greeting-content">
+                <div class="birthday-cake">🎂</div>
+                <p><strong>🎉 CHÚC MỪNG SINH NHẬT! 🎉</strong></p>
+                <p>Chúc bạn tuổi mới an khang thịnh vượng!</p>
+                <p>Sức khỏe dồi dào, hạnh phúc viên mãn!</p>
+                <p>Mọi ước mơ đều thành hiện thực! ✨</p>
+                <div style="margin-top: 20px;">
+                    <button onclick="createFireworks()" style="padding: 12px 24px; background: #ff6b6b; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">🎆 Bắn pháo hoa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sleep Modal -->
+    <div id="sleepModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('sleepModal')">&times;</span>
+            <h2>😴 Lời Chúc Ngủ Ngon</h2>
+            <div class="greeting-content">
+                <div class="sleep-animation">🌙</div>
+                <p><strong>Chúc bạn ngủ ngon! 😴</strong></p>
+                <p>Hãy để tâm hồn thư thái, gác lại mọi lo toan</p>
+                <p>Chúc bạn có những giấc mơ đẹp và ngủ sâu giấc</p>
+                <p>Mai sẽ là một ngày tuyệt vời! 🌟</p>
+                <div style="margin-top: 20px; font-style: italic; color: #666;">
+                    "Ngủ ngon nhé, ngày mai sẽ tràn đầy hy vọng"
+                </div>
+                <div style="margin-top: 20px;">
+                    <button onclick="playLullaby()" style="padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">🎵 Nhạc ru</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Year Modal -->
+    <div id="newyearModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('newyearModal')">&times;</span>
+            <h2>🎊 Lời Chúc Năm Mới</h2>
+            <div class="greeting-content">
+                <div style="font-size: 60px; margin: 20px 0;">🎆</div>
+                <p><strong>🎉 CHÚC MỪNG NĂM MỚI <span class="year-highlight" id="currentYear"></span>! 🎉</strong></p>
+                
+                <div class="year-info">
+                    <p><strong>📅 Thông tin năm <span id="yearInfo"></span>:</strong></p>
+                    <p id="yearDetails"></p>
+                    <p id="zodiacInfo"></p>
+                </div>
+                
+                <p>Chúc bạn năm mới an khang thịnh vượng!</p>
+                <p>Sức khỏe dồi dào, công việc thuận lợi!</p>
+                <p>Gia đình hạnh phúc, vạn sự như ý!</p>
+                <p>Tiền vào như nước, thành công rực rỡ! 💰</p>
+                
+                <div style="margin-top: 20px;">
+                    <button onclick="countdownToNewYear()" style="padding: 12px 24px; background: #51cf66; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 5px;">⏰ Đếm ngược đến năm mới</button>
+                    <button onclick="showYearPrediction()" style="padding: 12px 24px; background: #ffa500; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 5px;">🔮 Dự đoán năm mới</button>
+                </div>
+                
+                <div id="countdownDisplay" class="countdown-display" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Love Modal -->
+    <div id="loveModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loveModal')">&times;</span>
+            <h2>💕 Lời Tỏ Tình</h2>
+            <div class="greeting-content">
+                <div class="scratch-card" id="scratchCard">
+                    <div class="scratch-content">
+                        <div>💖 Em có biết không? 💖<br>
+                        Anh yêu em nhiều lắm!<br>
+                        Từ lúc gặp em, trái tim anh<br>
+                        chỉ biết đập cho em thôi! 💕</div>
+                    </div>
+                    <canvas class="scratch-surface" id="scratchCanvas" width="300" height="200">
+                        Cào để xem lời nhắn! ❤️
+                    </canvas>
+                </div>
+                <div class="hearts-container" id="heartsContainer"></div>
+                <div class="love-message" style="display: none;" id="loveMessage">
+                    <p><strong>💝 Anh yêu em! 💝</strong></p>
+                    <p>Em có muốn làm người yêu anh không? 🥰</p>
+                </div>
+                <div style="margin-top: 20px;">
+                    <button onclick="showHearts()" style="padding: 12px 24px; background: #e74c3c; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">💕 Tỏ tình</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Modal -->
+    <div id="hiddenModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('hiddenModal')">&times;</span>
+            <h2>🎭 Lệnh Ẩn - Khu Vực Bí Mật</h2>
+            <div class="hidden-content">
+                <h3>🔓 Chúc mừng! Bạn đã mở khóa khu vực bí mật!</h3>
+                <p>Đây là những tính năng đặc biệt chỉ dành cho bạn:</p>
+                
+                <div class="secret-features">
+                    <button class="secret-btn" onclick="changeTheme()">🎨 Đổi giao diện</button>
+                    <button class="secret-btn" onclick="showMatrix()">💻 Ma trận</button>
+                    <button class="secret-btn" onclick="secretGame()">🎮 Game bí mật</button>
+                    <button class="secret-btn" onclick="fortuneTeller()">🔮 Xem tướng</button>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                    <p><strong>🎁 Quà tặng đặc biệt:</strong></p>
+                    <p>• Mã giảm giá: HIDDEN<span id="hiddenYear"></span></p>
+                    <p>• Điểm thưởng: +999 points</p>
+                    <p>• Quyền truy cập VIP vĩnh viễn</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fireworks" id="fireworks"></div>
+
+    <script>
+        // Global variables
+        let isHiddenRevealed = false;
+        let scratchProgress = 0;
+
+        // Get current year and related info
+        function getCurrentYearInfo() {
+            const currentYear = new Date().getFullYear();
+            const zodiacAnimals = ['Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', 'Ngọ', 'Mùi', 'Thân', 'Dậu', 'Tuất', 'Hợi'];
+            const zodiacIndex = (currentYear - 4) % 12;
+            const zodiac = zodiacAnimals[zodiacIndex];
+            
+            return {
+                year: currentYear,
+                zodiac: zodiac,
+                isLeapYear: (currentYear % 4 === 0 && currentYear % 100 !== 0) || (currentYear % 400 === 0)
+            };
+        }
+
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            if (modalId === 'clockModal') {
+                startClock();
+            } else if (modalId === 'newyearModal') {
+                updateNewYearInfo();
+            } else if (modalId === 'loveModal') {
+                initScratchCard();
+            } else if (modalId === 'hiddenModal') {
+                updateHiddenYear();
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Clock functions
+        function startClock() {
+            function updateClock() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('vi-VN', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                const dateString = now.toLocaleDateString('vi-VN', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                document.getElementById('clockDisplay').textContent = timeString;
+                document.getElementById('dateDisplay').textContent = dateString;
+            }
+            updateClock();
+            setInterval(updateClock, 1000);
+        }
+
+        function setAlarm() {
+            const time = prompt("Đặt báo thức (HH:MM):");
+            if (time) {
+                alert(`⏰ Đã đặt báo thức lúc ${time}!`);
+            }
+        }
+
+        // New Year functions - TỰ ĐỘNG CẬP NHẬT THEO NĂM
+        function updateNewYearInfo() {
+            const yearInfo = getCurrentYearInfo();
+            
+            // Cập nhật năm hiện tại
+            document.getElementById('currentYear').textContent = yearInfo.year;
+            document.getElementById('yearInfo').textContent = yearInfo.year;
+            
+            // Thông tin chi tiết về năm
+            let yearDetails = `Năm ${yearInfo.year}`;
+            if (yearInfo.isLeapYear) {
+                yearDetails += ' là năm nhuận (366 ngày)';
+            } else {
+                yearDetails += ' là năm thường (365 ngày)';
+            }
+            document.getElementById('yearDetails').textContent = yearDetails;
+            
+            // Thông tin con giáp
+            document.getElementById('zodiacInfo').textContent = `🐉 Năm ${yearInfo.zodiac} - ${getZodiacDescription(yearInfo.zodiac)}`;
+        }
+
+        function getZodiacDescription(zodiac) {
+            const descriptions = {
+                'Tý': 'Thông minh, linh hoạt',
+                'Sửu': 'Chăm chỉ, kiên nhẫn', 
+                'Dần': 'Dũng cảm, quyết đoán',
+                'Mão': 'Nhẹ nhàng, tinh tế',
+                'Thìn': 'Cao quý, may mắn',
+                'Tỵ': 'Khôn ngoan, bí ẩn',
+                'Ngọ': 'Năng động, tự do',
+                'Mùi': 'Hiền lành, sáng tạo',
+                'Thân': 'Thông minh, hoạt bát',
+                'Dậu': 'Cần cù, trung thực',
+                'Tuất': 'Trung thành, đáng tin',
+                'Hợi': 'Chân thành, hào phóng'
+            };
+            return descriptions[zodiac] || 'Đặc biệt';
+        }
+
+        function countdownToNewYear() {
+            const now = new Date();
+            const nextYear = now.getFullYear() + 1;
+            const newYear = new Date(nextYear, 0, 1);
+            const timeLeft = newYear - now;
+            
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            const countdownDisplay = document.getElementById('countdownDisplay');
+            countdownDisplay.style.display = 'block';
+            countdownDisplay.innerHTML = `
+                <p>⏰ Còn lại đến năm ${nextYear}:</p>
+                <p>${days} ngày ${hours} giờ ${minutes} phút ${seconds} giây</p>
+            `;
+            
+            // Cập nhật mỗi giây
+            const countdownInterval = setInterval(() => {
+                const now = new Date();
+                const timeLeft = newYear - now;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownDisplay.innerHTML = `🎉 CHÚC MỪNG NĂM MỚI ${nextYear}! 🎉`;
+                    createFireworks();
+                    return;
+                }
+                
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                
+                countdownDisplay.innerHTML = `
+                    <p>⏰ Còn lại đến năm ${nextYear}:</p>
+                    <p>${days} ngày ${hours} giờ ${minutes} phút ${seconds} giây</p>
+                `;
+            }, 1000);
+        }
+
+        function showYearPrediction() {
+            const yearInfo = getCurrentYearInfo();
+            const predictions = [
+                `🌟 Năm ${yearInfo.year} sẽ là năm đột phá trong sự nghiệp!`,
+                `💰 Tài lộc sẽ ùn ùn kéo đến trong năm ${yearInfo.year}!`,
+                `❤️ Tình yêu sẽ nở rộ trong năm ${yearInfo.year}!`,
+                `🍀 Năm ${yearInfo.year} là năm của may mắn và thành công!`,
+                `🎯 Mọi mục tiêu trong năm ${yearInfo.year} đều sẽ đạt được!`,
+                `🌈 Năm ${yearInfo.year} sẽ tràn đầy màu sắc và niềm vui!`
+            ];
+            
+            const randomPrediction = predictions[Math.floor(Math.random() * predictions.length)];
+            alert(randomPrediction);
+        }
+
+        function updateHiddenYear() {
+            const currentYear = new Date().getFullYear();
+            document.getElementById('hiddenYear').textContent = currentYear;
+        }
+
+        // Birthday functions
+        function createFireworks() {
+            const fireworksContainer = document.getElementById('fireworks');
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'];
+            
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    firework.style.left = Math.random() * window.innerWidth + 'px';
+                    firework.style.top = Math.random() * window.innerHeight + 'px';
+                    firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    fireworksContainer.appendChild(firework);
+                    
+                    setTimeout(() => {
+                        firework.remove();
+                    }, 1000);
+                }, i * 200);
+            }
+        }
+
+        // Sleep functions
+        function playLullaby() {
+            alert("🎵 Đang phát nhạc ru ngọt ngào... Ngủ ngon nhé! 😴");
+        }
+
+        // Love functions
+        function initScratchCard() {
+    const canvas = document.getElementById('scratchCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Reset scratch progress
+    scratchProgress = 0;
+    
+    // Show canvas and hide love message
+    canvas.style.display = 'block';
+    document.getElementById('loveMessage').style.display = 'none';
+    
+    // Fill canvas with scratch surface
+    ctx.fillStyle = '#ccc';
+    ctx.fillRect(0, 0, 300, 200);
+    
+    // Add text "Cào để xem lời nhắn! ❤️"
+    ctx.fillStyle = '#666';
+    ctx.font = 'bold 18px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('Cào để xem lời nhắn! ❤️', 150, 90);
+    ctx.fillText('💕 Vuốt để khám phá 💕', 150, 120);
+    
+    let isScratching = false;
+    
+    // Remove old event listeners by cloning
+    const newCanvas = canvas.cloneNode(true);
+    canvas.parentNode.replaceChild(newCanvas, canvas);
+    
+    // Get new context
+    const newCtx = newCanvas.getContext('2d');
+    
+    // Redraw on new canvas
+    newCtx.fillStyle = '#ccc';
+    newCtx.fillRect(0, 0, 300, 200);
+    newCtx.fillStyle = '#666';
+    newCtx.font = 'bold 18px Arial';
+    newCtx.textAlign = 'center';
+    newCtx.fillText('Cào để xem lời nhắn! ❤️', 150, 90);
+    newCtx.fillText('💕 Vuốt để khám phá 💕', 150, 120);
+    
+    // Add event listeners
+    newCanvas.addEventListener('mousedown', startScratching);
+    newCanvas.addEventListener('mousemove', scratch);
+    newCanvas.addEventListener('mouseup', stopScratching);
+    newCanvas.addEventListener('mouseleave', stopScratching);
+    
+    // Touch events for mobile
+    newCanvas.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        startScratching(e);
+    });
+    newCanvas.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+        scratch(e);
+    });
+    newCanvas.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        stopScratching();
+    });
+    
+    function startScratching(e) {
+        isScratching = true;
+        scratch(e);
+    }
+    
+    function scratch(e) {
+        if (!isScratching) return;
+        
+        const rect = newCanvas.getBoundingClientRect();
+        let x, y;
+        
+        if (e.touches) {
+            x = e.touches[0].clientX - rect.left;
+            y = e.touches[0].clientY - rect.top;
+        } else {
+            x = e.clientX - rect.left;
+            y = e.clientY - rect.top;
+        }
+        
+        // Scale coordinates if canvas is scaled
+        const scaleX = newCanvas.width / rect.width;
+        const scaleY = newCanvas.height / rect.height;
+        x *= scaleX;
+        y *= scaleY;
+        
+        newCtx.globalCompositeOperation = 'destination-out';
+        newCtx.beginPath();
+        newCtx.arc(x, y, 25, 0, 2 * Math.PI);
+        newCtx.fill();
+        
+        scratchProgress += 1;
+        
+        // Check if enough area is scratched
+        if (scratchProgress > 40) {
+            newCanvas.style.display = 'none';
+            document.getElementById('loveMessage').style.display = 'block';
+            showHearts();
+            scratchProgress = 0; // Reset for next time
+        }
+    }
+    
+    function stopScratching() {
+        isScratching = false;
+    }
+}
+
+
+        function showHearts() {
+    const container = document.getElementById('heartsContainer');
+    container.innerHTML = ''; // Clear previous hearts
+    const hearts = ['💖', '💕', '💗', '💝', '💘', '💞', '❤️', '💓', '💟'];
+    
+    for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            heart.style.fontSize = (20 + Math.random() * 20) + 'px';
+            container.appendChild(heart);
+            
+            setTimeout(() => {
+                if (heart.parentNode) {
+                    heart.remove();
+                }
+            }, 3000);
+        }, i * 150);
+    }
+    
+    // Add romantic message
+    setTimeout(() => {
+        alert('💕 Anh yêu em! Em có đồng ý làm người yêu anh không? 🥰');
+    }, 2000);
+}
+
+
+        // Hidden functions
+        function revealHidden() {
+            if (!isHiddenRevealed) {
+                const hiddenItem = document.getElementById('hiddenItem');
+                hiddenItem.classList.add('revealed');
+                isHiddenRevealed = true;
+                setTimeout(() => {
+                    openModal('hiddenModal');
+                }, 500);
+            } else {
+                openModal('hiddenModal');
+            }
+        }
+
+        function changeTheme() {
+            const themes = [
+                'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
+            ];
+            const randomTheme = themes[Math.floor(Math.random() * themes.length)];
+            document.body.style.background = randomTheme;
+            alert('🎨 Đã thay đổi giao diện!');
+        }
+
+        function showMatrix() {
+            const matrix = document.createElement('div');
+            matrix.style.position = 'fixed';
+            matrix.style.top = '0';
+            matrix.style.left = '0';
+            matrix.style.width = '100%';
+            matrix.style.height = '100%';
+            matrix.style.background = 'black';
+            matrix.style.color = '#00ff00';
+            matrix.style.fontFamily = 'monospace';
+            matrix.style.fontSize = '12px';
+            matrix.style.zIndex = '9999';
+            matrix.style.overflow = 'hidden';
+            
+            let matrixText = '';
+            for (let i = 0; i < 1000; i++) {
+                matrixText += String.fromCharCode(Math.random() * 94 + 33);
+                if (i % 50 === 0) matrixText += '<br>';
+            }
+            matrix.innerHTML = matrixText;
+            
+            document.body.appendChild(matrix);
+            
+            setTimeout(() => {
+                matrix.remove();
+                                alert('💻 Chào mừng đến với Ma Trận!');
+            }, 3000);
+        }
+
+        function secretGame() {
+            const number = Math.floor(Math.random() * 10) + 1;
+            const guess = prompt('🎮 Game đoán số! Tôi đang nghĩ một số từ 1-10:');
+            if (parseInt(guess) === number) {
+                alert('🎉 Chính xác! Bạn thật tuyệt vời!');
+                createFireworks();
+            } else {
+                alert(`😅 Sai rồi! Số tôi nghĩ là ${number}. Thử lại nhé!`);
+            }
+        }
+
+        function fortuneTeller() {
+            const currentYear = new Date().getFullYear();
+            const fortunes = [
+                `🔮 Năm ${currentYear} này bạn sẽ gặp may mắn lớn!`,
+                `⭐ Tình yêu đang đến gần bạn trong năm ${currentYear}!`,
+                `💰 Tài lộc sẽ ùn ùn kéo đến trong năm ${currentYear}!`,
+                `🌟 Sự nghiệp sẽ thăng tiến vượt bậc năm ${currentYear}!`,
+                `🍀 Sức khỏe dồi dào, tinh thần sảng khoái năm ${currentYear}!`,
+                `🎯 Mọi kế hoạch năm ${currentYear} đều thành công!`,
+                `🌈 Cuộc sống năm ${currentYear} tràn đầy màu sắc!`,
+                `🎁 Năm ${currentYear} sẽ có những bất ngờ thú vị!`
+            ];
+            const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+            alert(randomFortune);
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cập nhật năm ngay khi trang load
+            updateNewYearInfo();
+            updateHiddenYear();
+            
+            // Cập nhật năm mỗi phút (để đảm bảo luôn chính xác)
+            setInterval(() => {
+                updateNewYearInfo();
+                updateHiddenYear();
+            }, 60000); // 60 giây
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Add click animations
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+
+        // Easter egg: Konami code
+        let konamiCode = [];
+        const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // ↑↑↓↓←→←→BA
+        
+        document.addEventListener('keydown', function(e) {
+            konamiCode.push(e.keyCode);
+            if (konamiCode.length > konamiSequence.length) {
+                konamiCode.shift();
+            }
+            
+            if (konamiCode.length === konamiSequence.length && 
+                konamiCode.every((code, index) => code === konamiSequence[index])) {
+                alert('🎮 Konami Code activated! Bạn nhận được 30 mạng!');
+                createFireworks();
+                konamiCode = [];
+            }
+        });
+
+        // Auto-update year display every second for real-time accuracy
+        setInterval(() => {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            
+            // Update all year displays if they exist and are visible
+            const yearElements = document.querySelectorAll('#currentYear, #yearInfo, #hiddenYear');
+            yearElements.forEach(element => {
+                if (element && element.offsetParent !== null) { // Check if element is visible
+                    if (element.id === 'hiddenYear') {
+                        element.textContent = currentYear;
+                    } else {
+                        element.textContent = currentYear;
+                    }
+                }
+            });
+            
+            // Special New Year's moment detection
+            if (now.getMonth() === 0 && now.getDate() === 1 && 
+                now.getHours() === 0 && now.getMinutes() === 0 && now.getSeconds() < 5) {
+                // It's New Year! Show special celebration
+                setTimeout(() => {
+                    alert(`🎊 CHÚC MỪNG NĂM MỚI ${currentYear}! 🎊`);
+                    createFireworks();
+                }, 1000);
+            }
+        }, 1000);
+
+        // Add special effects for different times of year
+        function addSeasonalEffects() {
+            const now = new Date();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+            
+            // Tết Nguyên Đán (around January/February)
+            if ((month === 1 && day >= 20) || (month === 2 && day <= 20)) {
+                document.body.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #ffd700 100%)';
+                console.log('🧧 Chúc Mừng Năm Mới! Happy Lunar New Year!');
+            }
+            
+            // Christmas (December)
+            if (month === 12) {
+                document.body.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #228b22 100%)';
+                console.log('🎄 Merry Christmas!');
+            }
+            
+            // Valentine's Day (February 14)
+            if (month === 2 && day === 14) {
+                document.body.style.background = 'linear-gradient(135deg, #ff69b4 0%, #ff1493 100%)';
+                console.log('💕 Happy Valentine\'s Day!');
+            }
+        }
+
+        // Call seasonal effects on load
+        addSeasonalEffects();
+
+        // Add touch support for mobile devices
+        document.addEventListener('touchstart', function() {}, {passive: true});
+        document.addEventListener('touchmove', function() {}, {passive: true});
+        document.addEventListener('touchend', function() {}, {passive: true});
+
+        // Prevent zoom on double tap for better mobile experience
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl + 1-7 to open modals quickly
+            if (e.ctrlKey) {
+                switch(e.key) {
+                    case '1':
+                        e.preventDefault();
+                        openModal('clockModal');
+                        break;
+                    case '2':
+                        e.preventDefault();
+                        openModal('morningModal');
+                        break;
+                    case '3':
+                        e.preventDefault();
+                        openModal('birthdayModal');
+                        break;
+                    case '4':
+                        e.preventDefault();
+                        openModal('sleepModal');
+                        break;
+                    case '5':
+                        e.preventDefault();
+                        openModal('newyearModal');
+                        break;
+                    case '6':
+                        e.preventDefault();
+                        openModal('loveModal');
+                        break;
+                    case '7':
+                        e.preventDefault();
+                        revealHidden();
+                        break;
+                }
+            }
+            
+            // ESC to close modals
+            if (e.key === 'Escape') {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    if (modal.style.display === 'block') {
+                        modal.style.display = 'none';
+                    }
+                });
+            }
+        });
+
+        // Add performance optimization
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Optimized resize handler
+        const handleResize = debounce(() => {
+            // Adjust layout for different screen sizes
+            const container = document.querySelector('.container');
+            if (window.innerWidth < 480) {
+                container.style.padding = '20px 15px';
+            } else {
+                container.style.padding = '30px 20px';
+            }
+        }, 250);
+
+        window.addEventListener('resize', handleResize);
+
+        // Call resize handler on load
+        handleResize();
+
+        console.log('🌟 Website Đa Chức Năng đã sẵn sàng!');
+        console.log('💡 Tip: Sử dụng Ctrl + 1-7 để mở nhanh các chức năng!');
+        console.log('🎮 Easter egg: Thử nhập Konami Code (↑↑↓↓←→←→BA)');
+    </script>
+</body>
+</html>
+
